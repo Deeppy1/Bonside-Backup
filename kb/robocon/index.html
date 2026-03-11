@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <meta charset="UTF-8" />
+  <title>Robot Control Basics | Bonside KB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    /* ===== Reset & Base ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(10, 20, 30, 0.6), rgba(10, 20, 30, 0.6)),
+        url("/background.jpg") center / cover no-repeat fixed;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== Header ===== */
+    header {
+      backdrop-filter: blur(8px);
+      background: rgba(15, 25, 35, 0.55);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    a:visited,
+    a:hover,
+    a:active {
+      color: #fff;
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+    }
+
+    /* ===== Layout ===== */
+    .container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      background: rgba(15, 25, 35, 0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 20px;
+      position: sticky;
+      top: 24px;
+      height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    /* ===== Content ===== */
+    .content {
+      background: rgba(15, 25, 35, 0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 36px 40px;
+    }
+
+    .content h2 {
+      font-size: 1.9rem;
+      margin-bottom: 12px;
+    }
+
+    .content h3 {
+      font-size: 1.3rem;
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+
+    .content p {
+      line-height: 1.7;
+      opacity: 0.9;
+      margin-bottom: 14px;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.45);
+      padding: 16px;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      font-size: 0.9rem;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 3px 6px;
+      border-radius: 6px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 12px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Bonside</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/kb">Knowledge Base</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Getting Started</h2>
+      <ul>
+        <li><a href="#initialisation">Initialisation</a></li>
+        <li><a href="#time">Time</a></li>
+        <li><a href="#motors">Motors</a></li>
+        <li><a href="#example">Complete Example</a></li>
+
+        <h2>Next Steps</h2>
+        <li><a href="/kb/robocon/vision">Vision</a></li>
+        <li><a href="/kb/robocon/servos">Servos</a></li>
+	<li><a href="/kb/robocon/gpio">GPIO</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <h2>Robot Control Basics</h2>
+
+      <p>
+        This document explains the fundamentals of controlling a robot using the
+        <code>robot</code> Python library. It covers setup, timing, motor control,
+        and common movement patterns.
+      </p>
+
+      <h3 id="initialisation">Initialisation</h3>
+      <p>
+        Import the required libraries and create a <code>Robot</code> instance.
+        The <code>time</code> library is used for delays and timing.
+      </p>
+
+      <pre><code>import robot
+import time
+
+R = robot.Robot()</code></pre>
+
+      <h3 id="time">Time</h3>
+      <p>
+        Many challenges require you to wait for a specific duration while
+        something is happening, such as turning or driving forwards.
+      </p>
+
+      <pre><code>time.sleep(10)</code></pre>
+
+      <p>The value passed to <code>sleep</code> is the number of seconds to wait.</p>
+
+      <h4>Starting and stopping a timer</h4>
+      <p>
+        To measure elapsed time, use <code>time.time()</code> before and after
+        an action.
+      </p>
+
+      <pre><code>import time
+
+time_1 = time.time()
+# insert action here
+time_2 = time.time()
+
+time_passed = time_2 - time_1
+print(time_passed)</code></pre>
+
+      <h3 id="motors">Motors</h3>
+      <p>
+        Motors are controlled by setting a power percentage. Positive values move
+        forwards; negative values move backwards.
+      </p>
+
+      <pre><code>R.motors[0] = 60</code></pre>
+
+      <p>
+        Use <code>R.motors[1]</code> for the second motor. To stop the robot, set
+        both motors to zero.
+      </p>
+
+      <pre><code>R.motors[0] = 0
+R.motors[1] = 0</code></pre>
+
+      <p>
+        Turning is achieved by running one motor forwards and the other backwards.
+      </p>
+
+      <pre><code>import robot
+
+R = robot.Robot()
+R.motors[0] = 60
+R.motors[1] = 68</code></pre>
+
+      <h3 id="example">Complete Example</h3>
+      <p>
+        The following program moves the robot forwards, backwards, left, and
+        right for 10 seconds each.
+      </p>
+
+      <pre><code>import robot
+import time
+
+R = robot.Robot()
+
+# Going forwards
+R.motors[0] = 100
+R.motors[1] = 100
+time.sleep(10)
+
+# Going backwards
+R.motors[0] = -100
+R.motors[1] = -100
+time.sleep(10)
+
+# Going left
+R.motors[0] = -100
+R.motors[1] = 100
+time.sleep(10)
+
+# Going right
+R.motors[0] = 100
+R.motors[1] = -100
+time.sleep(10)</code></pre>
+    </main>
+  </div>
+
+  <footer>© Bonside</footer>
+</body>
+</html>
