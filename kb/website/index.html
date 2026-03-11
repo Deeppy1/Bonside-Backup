@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <meta charset="UTF-8" />
+  <title>Website Hosting Overview | Bonside KB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    /* ===== Reset & Base ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(10, 20, 30, 0.6), rgba(10, 20, 30, 0.6)),
+        url("/background.jpg") center / cover no-repeat fixed;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== Header ===== */
+    header {
+      backdrop-filter: blur(8px);
+      background: rgba(15, 25, 35, 0.55);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+    }
+
+    /* ===== Layout ===== */
+    .container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      background: rgba(15, 25, 35, 0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 20px;
+      position: sticky;
+      top: 24px;
+      height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    /* ===== Content ===== */
+    .content {
+      background: rgba(15, 25, 35, 0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 36px 40px;
+    }
+
+    .content h2 {
+      font-size: 1.9rem;
+      margin-bottom: 12px;
+    }
+
+    .content h3 {
+      font-size: 1.3rem;
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+
+    .content p {
+      line-height: 1.7;
+      opacity: 0.9;
+      margin-bottom: 14px;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.45);
+      padding: 16px;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      font-size: 0.9rem;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 3px 6px;
+      border-radius: 6px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 12px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Bonside</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/kb">Knowledge Base</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Overview</h2>
+      <ul>
+        <li><a href="#structure">Site Structure</a></li>
+        <li><a href="#stack">Tech Stack</a></li>
+        <li><a href="#sections">KB Sections</a></li>
+        <li><a href="#assets">Assets</a></li>
+	<li><a href="/kb/website/internal">Authentication Required</a></li>     
+	</ul>
+    </aside>
+
+    <main class="content">
+      <h2>Website Hosting Overview</h2>
+
+      <p>
+        This page gives a general overview of how the Bonside website is structured
+        and what technology powers it.
+      </p>
+
+      <h3 id="structure">Site Structure</h3>
+      <p>
+        The site is made up of static HTML pages served by a web server. Pages are
+        organised into sections — the main landing page, an admin area, and the
+        knowledge base.
+      </p>
+
+      <pre><code>bonside.co.uk/
+├── Home
+├── Admin panel
+└── Knowledge Base (kb/)
+    ├── Website
+    ├── Robocon/
+    │   ├── GPIO
+    │   ├── Servos
+    │   └── Vision
+    └── FTC/
+        ├── Overview
+        └── Decode/
+            ├── Penalties
+            ├── Robot
+            └── Scoring
+</code></pre>
+
+      <h3 id="stack">Tech Stack</h3>
+      <p>
+        The website is built entirely with static HTML, CSS, and JavaScript — no
+        frameworks or build tools. It is served by nginx on a Linux host.
+      </p>
+      <p>
+        The admin section includes a small backend API used to interface with
+        internal infrastructure. The API is not publicly accessible beyond its
+        intended use by the admin panel.
+      </p>
+
+      <h3 id="sections">KB Sections</h3>
+      <p>
+        The knowledge base is split into topics. Each section is a standalone HTML
+        page documenting a specific area of the project.
+      </p>
+
+      <pre><code>kb/website/   – How this site is hosted and structured
+kb/robocon/   – Robocon robot documentation (GPIO, servos, vision)
+kb/ftc/       – FTC competition documentation and scoring decoder</code></pre>
+
+      <h3 id="assets">Assets</h3>
+      <p>
+        Shared assets like the background image and favicon are stored at the root
+        of the site and referenced using absolute paths so they work across all pages.
+      </p>
+
+      <pre><code>Background image:
+  url("/background.jpg")
+
+Favicon:
+  &lt;link rel="icon" href="/favicon.ico"&gt;</code></pre>
+
+    </main>
+  </div>
+
+  <footer>© Bonside</footer>
+</body>
+</html>
