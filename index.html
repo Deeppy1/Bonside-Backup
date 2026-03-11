@@ -1,140 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <meta charset="UTF-8" />
-  <title>Bonside</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bonside Admin Console</title>
 
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
-      min-height: 100vh;
-      background:
-        linear-gradient(rgba(10, 20, 30, 0.6), rgba(10, 20, 30, 0.6)),
-        url("/background.jpg") center / cover no-repeat fixed;
+      margin: 0;
+      height: 100vh;
+      background: url("/background.jpg") no-repeat center center fixed;
+      background-size: cover;
       color: #fff;
-      display: flex;
-      flex-direction: column;
     }
 
-    header {
-      backdrop-filter: blur(8px);
-      background: rgba(15, 25, 35, 0.55);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    header h1 {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    nav {
-      display: flex;
-      gap: 14px;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      transition: background 0.15s ease;
-    }
-
-    nav a:hover {
-      background: rgba(255,255,255,0.18);
-    }
-
-    .hero {
-      flex: 1;
+    .overlay {
+      background: rgba(0, 0, 0, 0.65);
+      height: 100%;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
     }
 
-    .welcome-box {
-      background: rgba(15, 25, 35, 0.6);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.12);
-      padding: 40px 45px;
-      text-align: center;
-      max-width: 520px;
-      width: 100%;
+    #admin {
+      width: 90%;
+      height: 85%;
+      background: rgba(15, 15, 15, 0.85);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+      display: flex;
     }
 
-    .welcome-box h2 {
-      font-size: 2.4rem;
-      margin-bottom: 14px;
-      font-weight: 600;
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 230px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 1rem;
     }
 
-    .welcome-box p {
-      font-size: 1.05rem;
-      margin-bottom: 14px;
-      opacity: 0.9;
+    .sidebar h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 0.5rem;
     }
 
-    .tagline {
+    .nav {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 0;
+    }
+
+    .nav li { margin: 0.4rem 0; }
+
+    .nav a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 6px;
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.05);
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(3px);
+    }
+
+    /* ── Content ── */
+    .content {
+      flex: 1;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      overflow-y: auto;
+    }
+
+    .content::-webkit-scrollbar { width: 4px; }
+    .content::-webkit-scrollbar-track { background: transparent; }
+    .content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+    /* ── Panels ── */
+    .panel {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .panel.offline {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 180, 60, 0.2);
+    }
+
+    .panel h3 {
+      margin: 0 0 0.8rem;
       font-size: 0.95rem;
-      opacity: 0.75;
-      letter-spacing: 0.5px;
+      font-weight: 600;
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
+
+    .offline-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: rgba(255, 180, 60, 0.15);
+      border: 1px solid rgba(255, 180, 60, 0.35);
+      color: rgba(255, 180, 60, 0.9);
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .avg-note {
+      font-size: 0.75rem;
+      opacity: 0.45;
+      margin: -0.4rem 0 0.7rem;
+    }
+
+    .row {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .row .panel { flex: 1; }
+
+    /* ── Stat list ── */
+    .stat-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .stat-list li {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.88rem;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-label { opacity: 0.6; font-size: 0.8rem; }
+    .stat-value { font-weight: 600; }
+    .stat-value.dimmed { opacity: 0.55; }
+
+    /* ── Progress bar ── */
+    .bar-wrap {
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.55);
+      transition: width 0.6s ease;
+    }
+
+    .bar-fill.offline-bar { background: rgba(255, 180, 60, 0.45); }
+    .bar-fill.warn        { background: rgba(255,180,60,0.8); }
+    .bar-fill.danger      { background: rgba(255,80,80,0.8); }
+
+    /* ── Job table ── */
+    .job-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+    }
+
+    .job-table th {
+      text-align: left;
+      padding: 0.35rem 0.5rem;
+      opacity: 0.5;
+      font-weight: 500;
+      font-size: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .job-table td {
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .job-table tr:last-child td { border-bottom: none; }
+    .job-table tr:hover td { background: rgba(255,255,255,0.04); }
+
+    .model-tag {
+      background: rgba(255,255,255,0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+    }
+
+    .active-model {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      margin: 0 4px 6px 0;
+    }
+
+    .live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #7fff6e;
+      box-shadow: 0 0 5px #7fff6e;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    .no-data { opacity: 0.45; font-size: 0.83rem; }
 
     footer {
       text-align: center;
-      padding: 12px;
-      font-size: 0.8rem;
       opacity: 0.6;
-    }
-
-    @media (max-width: 600px) {
-      .welcome-box {
-        padding: 30px 25px;
-      }
-
-      .welcome-box h2 {
-        font-size: 2rem;
-      }
+      font-size: 0.8rem;
+      margin-top: auto;
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>Bonside</h1>
-    <nav>
-      <a href="/status">Status</a>
-      <a href="/general">General</a>
-      <a href="/admin">Admin Console</a>
-      <a href="/kb">Knowledge Base</a>
-    </nav>
-  </header>
+  <div class="overlay">
+    <div id="admin">
 
-  <section class="hero">
-    <div class="welcome-box">
-      <h2>Welcome</h2>
-      <p>Choose where you would like to go.</p>
-      <div class="tagline">
-        Calm on the outside. Powerful on the inside.
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <h2>Services</h2>
+        <ul class="nav">
+          <li><a href="https://convertx.bonside.co.uk" target="_blank">ConvertX</a></li>
+          <li><a href="https://n8n.bonside.co.uk" target="_blank">n8n</a></li>
+          <li><a href="https://revision.bonside.co.uk" target="_blank">Revision</a></li>
+          <li><a href="https://pve:8006" target="_blank">Proxmox VE</a></li>
+          <br>
+          <li><a href="https://dash.cloudflare.com" target="_blank">Cloudflare</a></li>
+          <li><a href="/">Home</a></li>
+        </ul>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div class="content">
+
+        <div class="panel">
+          <h3>Welcome</h3>
+          <p style="margin:0;font-size:0.88rem;opacity:0.8;">
+            You are authenticated via <strong>Cloudflare Access</strong>.
+            Live system data refreshes every 10 seconds.
+          </p>
+        </div>
+
+        <div class="row">
+          <div class="panel" id="pve-panel">
+            <h3>Proxmox Node</h3>
+            <p class="no-data">Loading…</p>
+          </div>
+
+          <div class="panel" id="ai-system-panel">
+            <h3>AI Server</h3>
+            <p class="no-data">Loading…</p>
+          </div>
+        </div>
+
+        <div class="panel" id="ai-jobs-panel">
+          <h3>Ollama · Recent Jobs</h3>
+          <p class="no-data">Loading…</p>
+        </div>
+
+        <footer>&copy; Bonside 2026</footer>
+
       </div>
     </div>
-  </section>
+  </div>
 
-  <footer>
-    © Bonside
-  </footer>
+  <script>
+    function gb(b)  { return (b / 1073741824).toFixed(1); }
+    function pct(v) { return parseFloat(v).toFixed(1); }
+
+    function barClass(p) {
+      if (p >= 90) return 'danger';
+      if (p >= 70) return 'warn';
+      return '';
+    }
+
+    function bar(p, isOffline) {
+      const cls = isOffline ? 'offline-bar' : barClass(p);
+      return `<div class="bar-wrap"><div class="bar-fill ${cls}" style="width:${p}%"></div></div>`;
+    }
+
+    function statItem(label, value, barPct, isOffline) {
+      const dimmed = isOffline ? ' dimmed' : '';
+      return `<li>
+        <div class="stat-row">
+          <span class="stat-label">${label}</span>
+          <span class="stat-value${dimmed}">${value}</span>
+        </div>
+        ${barPct != null ? bar(barPct, isOffline) : ''}
+      </li>`;
+    }
+
+    function fmtUptime(s) {
+      const d = Math.floor(s / 86400);
+      const h = Math.floor((s % 86400) / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      if (d > 0) return `${d}d ${h}h`;
+      if (h > 0) return `${h}h ${m}m`;
+      return `${m}m`;
+    }
+
+    function fmtDuration(ms) {
+      if (ms < 1000) return `${ms}ms`;
+      return `${(ms / 1000).toFixed(1)}s`;
+    }
+
+    function fmtTimestamp(ts) {
+      try {
+        return new Date(ts).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' });
+      } catch { return ts; }
+    }
+
+    function fmtAgeFromIso(isoStr) {
+      if (!isoStr) return '';
+      const diff = Math.floor((Date.now() - new Date(isoStr)) / 60000);
+      if (diff < 60)  return `${diff}m ago`;
+      if (diff < 1440) return `${Math.floor(diff/60)}h ago`;
+      return `${Math.floor(diff/1440)}d ago`;
+    }
+
+    // ── Proxmox ───────────────────────────────────────────────────────────────
+    async function loadPVE() {
+      try {
+        const res  = await fetch('/admin/api/pve.php');
+        const json = await res.json();
+        const d    = json.data;
+
+        const cpuPct  = d.cpu * 100;
+        const memPct  = (d.memory.used / d.memory.total) * 100;
+        const diskPct = (d.rootfs.used / d.rootfs.total) * 100;
+
+        document.getElementById('pve-panel').innerHTML = `
+          <h3>Proxmox Node</h3>
+          <ul class="stat-list">
+            ${statItem('CPU',    pct(cpuPct) + '%', cpuPct)}
+            ${statItem('Memory', gb(d.memory.used) + ' / ' + gb(d.memory.total) + ' GB', memPct)}
+            ${statItem('Disk',   gb(d.rootfs.used) + ' / ' + gb(d.rootfs.total) + ' GB', diskPct)}
+            ${statItem('Uptime', fmtUptime(d.uptime))}
+            ${statItem('Load',   d.loadavg.join(' / '))}
+          </ul>`;
+      } catch (e) {
+        document.getElementById('pve-panel').innerHTML = `
+          <h3>Proxmox Node</h3>
+          <p class="no-data">⚠ Could not reach Proxmox API</p>`;
+      }
+    }
+
+    // ── AI Server ─────────────────────────────────────────────────────────────
+    async function loadAI() {
+      try {
+        const res  = await fetch('/admin/api/ollama.php');
+        const json = await res.json();
+        if (json.error && !json.offline) throw new Error(json.error);
+
+        const offline = json.offline === true;
+        const avgs    = json.averages ?? {};
+        const jobs    = json.jobs ?? [];
+
+        if (offline && avgs.sample_count) {
+          // ── Offline: show averages ──
+          const sampleAge  = fmtAgeFromIso(avgs.newest);
+          const sampleSpan = fmtAgeFromIso(avgs.oldest);
+
+          let gpuItem = '';
+          if (avgs.gpu_utilization != null) {
+            gpuItem = statItem('GPU avg utilisation', avgs.gpu_utilization + '%  avg ' + avgs.gpu_temp_c + '°C', avgs.gpu_utilization, true);
+          }
+
+          document.getElementById('ai-system-panel').className = 'panel offline';
+          document.getElementById('ai-system-panel').innerHTML = `
+            <h3>AI Server <span class="offline-badge">OFFLINE</span></h3>
+            <p class="avg-note">Showing averages from ${avgs.sample_count} snapshots · last seen ${sampleAge} · history back to ${sampleSpan}</p>
+            <ul class="stat-list">
+              ${statItem('CPU avg',    pct(avgs.cpu_percent)  + '%', avgs.cpu_percent,  true)}
+              ${statItem('Memory avg', pct(avgs.mem_percent)  + '%', avgs.mem_percent,  true)}
+              ${statItem('Disk avg',   pct(avgs.disk_percent) + '%', avgs.disk_percent, true)}
+              ${statItem('Load avg',   avgs.load_1 != null ? avgs.load_1.toFixed(2) : '—')}
+              ${gpuItem}
+            </ul>`;
+
+        } else if (offline) {
+          // Offline, no averages yet
+          document.getElementById('ai-system-panel').className = 'panel offline';
+          document.getElementById('ai-system-panel').innerHTML = `
+            <h3>AI Server <span class="offline-badge">OFFLINE</span></h3>
+            <p class="no-data">No historical data available yet.</p>`;
+
+        } else {
+          // ── Online: show live stats ──
+          const sys = json.system;
+
+          let activeHtml = '';
+          if (sys.active_models && sys.active_models.length > 0) {
+            activeHtml = '<div style="margin-bottom:0.7rem">' +
+              sys.active_models.map(m =>
+                `<span class="active-model"><span class="live-dot"></span>${m}</span>`
+              ).join('') + '</div>';
+          }
+
+          let gpuItem = '';
+          if (sys.gpu) {
+            gpuItem = statItem(
+              'GPU · ' + sys.gpu.name,
+              sys.gpu.utilization + '%  ' + sys.gpu.mem_used_mb + '/' + sys.gpu.mem_total_mb + ' MB  ' + sys.gpu.temp_c + '°C',
+              sys.gpu.utilization
+            );
+          }
+
+          document.getElementById('ai-system-panel').className = 'panel';
+          document.getElementById('ai-system-panel').innerHTML = `
+            <h3>AI Server</h3>
+            ${activeHtml}
+            <ul class="stat-list">
+              ${statItem('CPU',    pct(sys.cpu_percent) + '%', sys.cpu_percent)}
+              ${statItem('Memory', gb(sys.memory.used_bytes) + ' / ' + gb(sys.memory.total_bytes) + ' GB', sys.memory.percent)}
+              ${statItem('Disk',   gb(sys.disk.used_bytes)   + ' / ' + gb(sys.disk.total_bytes)   + ' GB', sys.disk.percent)}
+              ${statItem('Uptime', fmtUptime(sys.uptime_seconds))}
+              ${statItem('Load',   sys.load_avg.map(v => v.toFixed(2)).join(' / '))}
+              ${gpuItem}
+            </ul>`;
+        }
+
+        // ── Jobs panel (show last known regardless of online state) ──
+        if (jobs.length === 0) {
+          document.getElementById('ai-jobs-panel').innerHTML = `
+            <h3>Ollama · Recent Jobs</h3>
+            <p class="no-data">No completed jobs recorded yet.</p>`;
+        } else {
+          const offlineNote = offline
+            ? ' <span class="offline-badge">last known</span>'
+            : '';
+          const rows = jobs.map(j => `
+            <tr>
+              <td>${fmtTimestamp(j.timestamp)}</td>
+              <td><span class="model-tag">${j.model}</span></td>
+              <td>${fmtDuration(j.duration_ms)}</td>
+            </tr>`).join('');
+
+          document.getElementById('ai-jobs-panel').innerHTML = `
+            <h3>Ollama · Recent Jobs${offlineNote}</h3>
+            <table class="job-table">
+              <thead><tr><th>Time</th><th>Model</th><th>Duration</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>`;
+        }
+
+      } catch (e) {
+        document.getElementById('ai-system-panel').innerHTML = `
+          <h3>AI Server</h3>
+          <p class="no-data">⚠ Agent unreachable and no cached data</p>`;
+        document.getElementById('ai-jobs-panel').innerHTML = `
+          <h3>Ollama · Recent Jobs</h3>
+          <p class="no-data">⚠ No data available</p>`;
+      }
+    }
+
+    loadPVE();
+    loadAI();
+    setInterval(loadPVE, 10000);
+    setInterval(loadAI,  10000);
+  </script>
 </body>
 </html>
