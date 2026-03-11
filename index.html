@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <meta charset="UTF-8" />
+  <title>Bonside</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(10, 20, 30, 0.6), rgba(10, 20, 30, 0.6)),
+        url("/background.jpg") center / cover no-repeat fixed;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      backdrop-filter: blur(8px);
+      background: rgba(15, 25, 35, 0.55);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    nav {
+      display: flex;
+      gap: 14px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .welcome-box {
+      background: rgba(15, 25, 35, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 40px 45px;
+      text-align: center;
+      max-width: 520px;
+      width: 100%;
+    }
+
+    .welcome-box h2 {
+      font-size: 2.4rem;
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    .welcome-box p {
+      font-size: 1.05rem;
+      margin-bottom: 14px;
+      opacity: 0.9;
+    }
+
+    .tagline {
+      font-size: 0.95rem;
+      opacity: 0.75;
+      letter-spacing: 0.5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 12px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 600px) {
+      .welcome-box {
+        padding: 30px 25px;
+      }
+
+      .welcome-box h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Bonside</h1>
+    <nav>
+      <a href="/status">Status</a>
+      <a href="/general">General</a>
+      <a href="/admin">Admin Console</a>
+      <a href="/kb">Knowledge Base</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="welcome-box">
+      <h2>Welcome</h2>
+      <p>Choose where you would like to go.</p>
+      <div class="tagline">
+        Calm on the outside. Powerful on the inside.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © Bonside
+  </footer>
+</body>
+</html>
